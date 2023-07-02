@@ -38,4 +38,4 @@ The book search engine offers the following features:
 You can access the repository and view the deployed app for the text editor project through the following links:
 
 - [Click to View Repository](https://github.com/johnpow/books-search-engine)
-- [Click for the Deployed Heroku App](https://johnpow-text-editor-6d40d1083695.herokuapp.com/)
+- [Click for the Deployed Heroku App](https://johnpow-book-search-692c33929e63.herokuapp.com/)
