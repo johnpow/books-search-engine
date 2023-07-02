@@ -28,7 +28,15 @@ const resolvers = {
 
       const token = signToken(user);
 
-      return { token, user };
+      return {        token,
+        user: {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          bookCount: user.bookCount,
+          savedBooks: user.savedBooks,
+        }
+    };
     },
     addUser: async (_, { username, email, password }) => {
       const user = await User.create({ username, email, password });
@@ -42,18 +50,18 @@ const resolvers = {
       return { token, user };
     },
     saveBook: async (_, { input }, context) => {
-      if (context.user) {
-        const updatedUser = await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $addToSet: { savedBooks: input } },
-          { new: true, runValidators: true }
-        );
-
-        return updatedUser;
+        if (context.user) {
+          const updatedUser = await User.findOneAndUpdate(
+            { _id: context.user._id },
+            { $addToSet: { savedBooks: input } },
+            { new: true, runValidators: true }
+          );
+          return updatedUser;
+        }
+      
+        throw new AuthenticationError('Not authenticated');
       }
-
-      throw new AuthenticationError('Not authenticated');
-    },
+,      
     removeBook: async (_, { bookId }, context) => {
       if (context.user) {
         const updatedUser = await User.findOneAndUpdate(

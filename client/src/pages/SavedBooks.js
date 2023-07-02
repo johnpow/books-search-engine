@@ -18,8 +18,9 @@ const SavedBooks = () => {
     }
 
     try {
-      const { data } = await removeBook({ variables: { bookId } });
+      const { data: removedBookData } = await removeBook({ variables: { bookId } });
       removeBookId(bookId);
+      // Handle removedBookData if needed
     } catch (err) {
       console.error(err);
     }
@@ -29,7 +30,11 @@ const SavedBooks = () => {
     return <h2>LOADING...</h2>;
   }
 
-  const { me: user } = data;
+  const user = data?.me;
+
+  if (!user) {
+    return <h2>No user data found. Please log in.</h2>;
+  }
 
   return (
     <>
