@@ -7,7 +7,7 @@ const resolvers = {
     me: async (_, __, context) => {
       if (context.user) {
         // User is authenticated, return the user object
-        return context.user;
+        return User.findOne({ _id: context.user._id });
       }
       throw new AuthenticationError('Not authenticated');
     },
@@ -64,6 +64,7 @@ const resolvers = {
 ,      
     removeBook: async (_, { bookId }, context) => {
       if (context.user) {
+
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
           { $pull: { savedBooks: { bookId } } },

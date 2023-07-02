@@ -69,22 +69,6 @@ const SearchBooks = () => {
       await saveBook({
         variables: { input: bookToSave },
 
-        // update: (cache, { data }) => {
-        //   // Read the saved books from the cache
-        //   const savedBooksCache = cache.readQuery({ query: GET_ME });
-        //   const savedBooks = savedBooksCache?.me.savedBooks || [];
-        //   console.log(savedBooksCache)
-        //   // Update the cache with the new saved book
-        //   cache.writeQuery({
-        //     query: GET_ME,
-        //     data: {
-        //       me: {
-        //         ...savedBooksCache?.me,
-        //         savedBooks: [...savedBooks, data.saveBook],
-        //       },
-        //     },
-        //   });
-        // },
       });
       setSavedBookIds([...savedBookIds, bookId]);
     } catch (err) {

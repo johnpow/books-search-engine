@@ -5,6 +5,7 @@ import {
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
+  defaultDataIdFromObject,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
@@ -15,6 +16,28 @@ import Navbar from './components/Navbar';
 const httpLink = createHttpLink({
   uri: '/graphql',
 });
+const cache = new InMemoryCache({
+  typePolicies: {
+    User: {
+      fields: {
+        savedBooks: {
+          merge(existing = [], incoming) {
+            return incoming;
+          },
+        },
+      },
+    },
+  },
+  dataIdFromObject: (object) => {
+    switch (object.__typename) {
+      case 'User':
+        return object._id; // Assuming the _id field is unique for each User
+      default:
+        return defaultDataIdFromObject(object);
+    }
+  },
+});
+
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
@@ -30,7 +53,7 @@ const authLink = setContext((_, { headers }) => {
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
+  cache: cache,
 });
 
 function App() {
